@@ -1,13 +1,13 @@
-package com.fnovel.backend;
+package com.novelread.fnovel;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class BackendApplication {
+public class FnovelApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(BackendApplication.class, args);
+		SpringApplication.run(FnovelApplication.class, args);
 	}
 
 }

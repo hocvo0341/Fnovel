@@ -1,10 +1,10 @@
-package com.fnovel.backend;
+package com.novelread.fnovel;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class BackendApplicationTests {
+class FnovelApplicationTests {
 
 	@Test
 	void contextLoads() {
