@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fnovel-python
+  labels:
+    app: fnovel-python
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fnovel-python
+  template:
+    metadata:
+      labels:
+        app: fnovel-python
+    spec:
+      containers:
+        - name: python
+          image: fnovel/ai-crawler:latest
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - secretRef:
+                name: fnovel-python-secrets
+          env:
+            - name: KAFKA_BOOTSTRAP_SERVERS
+              value: kafka:9092
+            - name: MONGODB_URI
+              value: mongodb://mongo:27017/fnovel
+            - name: REDIS_URL
+              value: redis://redis:6379
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 20
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 40
+            periodSeconds: 20
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fnovel-python
+spec:
+  selector:
+    app: fnovel-python
+  ports:
+    - port: 8000
+      targetPort: 8000
+  type: ClusterIP

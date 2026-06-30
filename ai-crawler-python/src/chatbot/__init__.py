@@ -1,0 +1,1 @@
+"""FNovel RAG chatbot module."""

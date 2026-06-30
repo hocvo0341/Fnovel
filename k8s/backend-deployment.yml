@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fnovel-backend
+  labels:
+    app: fnovel-backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: fnovel-backend
+  template:
+    metadata:
+      labels:
+        app: fnovel-backend
+    spec:
+      containers:
+        - name: backend
+          image: fnovel/backend:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: prod
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:postgresql://postgres:5432/fnovel
+            - name: SPRING_DATA_MONGODB_URI
+              value: mongodb://mongo:27017/fnovel
+            - name: SPRING_DATA_REDIS_HOST
+              value: redis
+            - name: SPRING_KAFKA_BOOTSTRAP_SERVERS
+              value: kafka:9092
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 60
+            periodSeconds: 20
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fnovel-backend
+spec:
+  selector:
+    app: fnovel-backend
+  ports:
+    - port: 8080
+      targetPort: 8080
+  type: ClusterIP

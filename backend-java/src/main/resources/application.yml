@@ -1,0 +1,41 @@
+spring:
+  application:
+    name: fnovel-backend
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/fnovel
+    username: fnovel
+    password: fnovel
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  data:
+    mongodb:
+      uri: mongodb://fnovel:fnovel@localhost:27017/fnovel?authSource=admin
+    redis:
+      host: localhost
+      port: 6379
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: fnovel-backend
+      auto-offset-reset: earliest
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+server:
+  port: 8080
+
+logging:
+  level:
+    com.fnovel.backend: DEBUG
+    org.springframework.security: INFO

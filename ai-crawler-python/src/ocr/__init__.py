@@ -1,0 +1,1 @@
+"""FNovel OCR module (PaddleOCR)."""
